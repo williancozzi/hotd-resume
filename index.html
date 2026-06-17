@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>House of the Dragon — Resumo Cartunesco (T1 & T2)</title>
+<style>
+  :root{
+    --ink:#1c1714; --paper:#f4e9d2; --gold:#e0a92a; --fire:#f0641e;
+    --green:#2f7a4d; --blood:#9e2b25; --silver:#d8d8de; --sky:#aee0f2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Trebuchet MS','Segoe UI',sans-serif;
+    background:radial-gradient(circle at 50% -10%,#2a2018,#120d09 70%);
+    color:#f4e9d2; min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:18px;
+  }
+  .wrap{width:100%; max-width:860px;}
+  header{text-align:center; margin-bottom:12px;}
+  header h1{font-size:26px; letter-spacing:.5px; color:var(--gold); text-shadow:0 2px 0 #000;}
+  header p{font-size:13px; color:#c9b48b; margin-top:2px;}
+  .tv{
+    background:#0c0906; border:6px solid #2a2018; border-radius:18px;
+    box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 0 0 2px #3a2c1d;
+    overflow:hidden; position:relative;
+  }
+  .stage{position:relative; width:100%; aspect-ratio:800/460; background:#000;}
+  .scene{
+    position:absolute; inset:0; opacity:0; transform:scale(1.04);
+    transition:opacity .5s ease, transform .5s ease;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .scene.active{opacity:1; transform:scale(1);}
+  .scene svg{width:100%; height:100%; display:block;}
+  .cap{
+    background:linear-gradient(180deg,#1a130c,#0c0906);
+    border-top:3px solid var(--gold); padding:14px 20px 16px; min-height:118px;
+  }
+  .cap .ep{font-size:11px; letter-spacing:2px; color:var(--fire); text-transform:uppercase; font-weight:bold;}
+  .cap h2{font-size:19px; color:var(--gold); margin:2px 0 6px;}
+  .cap p{font-size:14.5px; line-height:1.5; color:#ecdfc4;}
+  .controls{
+    display:flex; align-items:center; gap:10px; margin-top:14px; justify-content:center; flex-wrap:wrap;
+  }
+  button{
+    font-family:inherit; font-weight:bold; cursor:pointer; color:#1c1714;
+    background:linear-gradient(180deg,#f0d27a,#d9a426); border:2px solid #7a5712;
+    border-radius:10px; padding:9px 16px; font-size:14px; box-shadow:0 3px 0 #5c4210;
+    transition:transform .08s;
+  }
+  button:active{transform:translateY(2px); box-shadow:0 1px 0 #5c4210;}
+  button.ghost{background:#241a10; color:#e9d3a0; border-color:#5c4210; box-shadow:0 3px 0 #000;}
+  .counter{font-size:13px; color:#c9b48b; min-width:54px; text-align:center;}
+  .dots{display:flex; gap:6px; justify-content:center; margin-top:12px; flex-wrap:wrap;}
+  .dot{width:11px; height:11px; border-radius:50%; background:#3a2c1d; border:1px solid #5c4210; cursor:pointer; padding:0; box-shadow:none;}
+  .dot.on{background:var(--gold); box-shadow:0 0 8px var(--gold);}
+  .bar{height:5px; background:#2a2018; border-radius:3px; overflow:hidden; margin-top:10px;}
+  .bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--fire),var(--gold)); transition:width .12s linear;}
+  footer{text-align:center; font-size:12px; color:#7d6b4d; margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>🐉 House of the Dragon — O Resumo Cartunesco</h1>
+    <p>Temporadas 1 &amp; 2 · versão satírica · desenhada à mão (em vetor)</p>
+  </header>
+
+  <div class="tv">
+    <div class="stage" id="stage"></div>
+    <div class="cap">
+      <div class="ep" id="ep"></div>
+      <h2 id="title"></h2>
+      <p id="text"></p>
+    </div>
+  </div>
+
+  <div class="bar"><i id="prog"></i></div>
+
+  <div class="controls">
+    <button class="ghost" id="prev">⟵ Anterior</button>
+    <button id="play">⏸ Pausar</button>
+    <button class="ghost" id="next">Próximo ⟶</button>
+    <button class="ghost" id="music">🔊 Música</button>
+    <span class="counter" id="counter"></span>
+  </div>
+  <audio id="themeAudio" loop preload="auto">
+    <source src="theme.mp3" type="audio/mpeg">
+  </audio>
+  <div class="dots" id="dots"></div>
+
+  <footer>Cada cena fica ~9s · clique nas bolinhas pra pular · feito por Claude, traço por traço 🎨</footer>
+</div>
+
+<script>
+/* ---------- helpers de desenho cartoon ---------- */
+const NS="http://www.w3.org/2000/svg";
+
+// rostinho cartoon reutilizável (olhos esbugalhados)
+function face(cx,cy,r,skin,mood){
+  // mood: 'happy','sad','angry','shock','smug','dead'
+  let mouth="";
+  if(mood==='happy') mouth=`<path d="M${cx-r*0.45} ${cy+r*0.25} Q ${cx} ${cy+r*0.7} ${cx+r*0.45} ${cy+r*0.25}" stroke="#5b2b16" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  else if(mood==='sad') mouth=`<path d="M${cx-r*0.4} ${cy+r*0.55} Q ${cx} ${cy+r*0.2} ${cx+r*0.4} ${cy+r*0.55}" stroke="#5b2b16" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  else if(mood==='angry') mouth=`<path d="M${cx-r*0.4} ${cy+r*0.5} L ${cx+r*0.4} ${cy+r*0.4}" stroke="#5b2b16" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  else if(mood==='shock') mouth=`<ellipse cx="${cx}" cy="${cy+r*0.45}" rx="${r*0.22}" ry="${r*0.3}" fill="#5b2b16"/>`;
+  else if(mood==='smug') mouth=`<path d="M${cx-r*0.1} ${cy+r*0.45} Q ${cx+r*0.35} ${cy+r*0.55} ${cx+r*0.5} ${cy+r*0.25}" stroke="#5b2b16" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  else if(mood==='dead') mouth=`<path d="M${cx-r*0.35} ${cy+r*0.5} L ${cx+r*0.35} ${cy+r*0.5}" stroke="#5b2b16" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  let eyes;
+  if(mood==='dead'){
+    eyes=`<path d="M${cx-r*0.55} ${cy-r*0.25} l 18 18 M ${cx-r*0.55+18} ${cy-r*0.25} l -18 18" stroke="#1c1714" stroke-width="3.5"/>
+          <path d="M${cx+r*0.2} ${cy-r*0.25} l 18 18 M ${cx+r*0.2+18} ${cy-r*0.25} l -18 18" stroke="#1c1714" stroke-width="3.5"/>`;
+  } else if(mood==='angry'){
+    eyes=`<circle cx="${cx-r*0.4}" cy="${cy-r*0.1}" r="${r*0.18}" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+          <circle cx="${cx-r*0.4}" cy="${cy-r*0.05}" r="${r*0.09}" fill="#1c1714"/>
+          <circle cx="${cx+r*0.4}" cy="${cy-r*0.1}" r="${r*0.18}" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+          <circle cx="${cx+r*0.4}" cy="${cy-r*0.05}" r="${r*0.09}" fill="#1c1714"/>
+          <path d="M${cx-r*0.62} ${cy-r*0.42} l ${r*0.45} ${r*0.18}" stroke="#1c1714" stroke-width="4" stroke-linecap="round"/>
+          <path d="M${cx+r*0.62} ${cy-r*0.42} l ${-r*0.45} ${r*0.18}" stroke="#1c1714" stroke-width="4" stroke-linecap="round"/>`;
+  } else {
+    const pyl = mood==='shock'? -r*0.18 : 0;
+    eyes=`<circle cx="${cx-r*0.4}" cy="${cy-r*0.1}" r="${r*0.2}" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+          <circle cx="${cx-r*0.4}" cy="${cy-r*0.1+0.1*r+pyl}" r="${r*0.09}" fill="#1c1714"/>
+          <circle cx="${cx+r*0.4}" cy="${cy-r*0.1}" r="${r*0.2}" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+          <circle cx="${cx+r*0.4}" cy="${cy-r*0.1+0.1*r+pyl}" r="${r*0.09}" fill="#1c1714"/>`;
+  }
+  return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}" stroke="#1c1714" stroke-width="3"/>${eyes}${mouth}`;
+}
+// cabelo prata Targaryen (calota)
+function silverHair(cx,cy,r){
+  return `<path d="M${cx-r-3} ${cy} Q ${cx-r} ${cy-r-12} ${cx} ${cy-r-14} Q ${cx+r} ${cy-r-12} ${cx+r+3} ${cy} Q ${cx+r*0.7} ${cy-r*0.5} ${cx} ${cy-r*0.55} Q ${cx-r*0.7} ${cy-r*0.5} ${cx-r-3} ${cy} Z" fill="#dcdce3" stroke="#1c1714" stroke-width="3"/>`;
+}
+// cabelo escuro (Strong)
+function darkHair(cx,cy,r){
+  return `<path d="M${cx-r-3} ${cy} Q ${cx-r} ${cy-r-12} ${cx} ${cy-r-14} Q ${cx+r} ${cy-r-12} ${cx+r+3} ${cy} Q ${cx+r*0.7} ${cy-r*0.5} ${cx} ${cy-r*0.55} Q ${cx-r*0.7} ${cy-r*0.5} ${cx-r-3} ${cy} Z" fill="#3b2b1f" stroke="#1c1714" stroke-width="3"/>`;
+}
+// coroa
+function crown(cx,cy,w){
+  const h=w*0.55;
+  return `<path d="M${cx-w/2} ${cy} L ${cx-w/2} ${cy-h} L ${cx-w/4} ${cy-h*0.4} L ${cx} ${cy-h*1.1} L ${cx+w/4} ${cy-h*0.4} L ${cx+w/2} ${cy-h} L ${cx+w/2} ${cy} Z" fill="#e0a92a" stroke="#7a5712" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="${cx}" cy="${cy-h*0.7}" r="4" fill="#9e2b25" stroke="#7a5712" stroke-width="1.5"/>`;
+}
+// dragão cartoon (dir = 1 olha p/ direita)
+function dragon(x,y,s,color,dir,fire){
+  const f = dir||1;
+  const fireSvg = fire? `<g transform="translate(${x+f*135*s},${y-10*s})">
+      <path d="M0 0 L ${f*70*s} ${-14*s} L ${f*40*s} 0 L ${f*78*s} ${10*s} L ${f*42*s} ${10*s} L ${f*70*s} ${24*s} L 0 ${14*s} Z" fill="#f0641e" stroke="#9e2b25" stroke-width="2"/>
+      <path d="M${f*8*s} ${3*s} L ${f*52*s} ${-4*s} L ${f*30*s} ${6*s} L ${f*54*s} ${14*s} L ${f*10*s} ${11*s} Z" fill="#ffd24a"/>
+    </g>`:'';
+  return `<g transform="translate(${x},${y}) scale(${f},1)">
+    <path d="M-10 30 Q -120 10 -150 60 Q -110 50 -70 50 Q -110 70 -120 110 Q -80 70 -30 55 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
+    <ellipse cx="20" cy="40" rx="70" ry="42" fill="${color}" stroke="#1c1714" stroke-width="3"/>
+    <path d="M30 10 Q 60 -60 110 -40 Q 80 -10 70 20 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
+    <path d="M70 30 Q 120 0 150 30 Q 120 25 100 45 Q 130 55 120 80 Q 100 55 75 55 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
+    <circle cx="105" cy="20" r="6" fill="#fff" stroke="#1c1714" stroke-width="2"/>
+    <circle cx="106" cy="22" r="3" fill="#1c1714"/>
+    <path d="M120 36 q 12 2 18 0" stroke="#1c1714" stroke-width="2.5" fill="none"/>
+  </g>${fireSvg}`;
+}
+function bg(c1,c2){
+  return `<rect width="800" height="460" fill="${c1}"/><rect y="300" width="800" height="160" fill="${c2}"/>`;
+}
+
+/* ---------- as cenas ---------- */
+const scenes = [
+{ ep:"Temporada 1 · O estopim", title:"A escolha que estragou tudo",
+  text:"Rei Viserys, sem filho homem, aponta pra filha Rhaenyra: «você é minha herdeira!». Os lordes juram lealdade de cara amarrada. Spoiler: ninguém ia respeitar isso.",
+  svg:`${bg('#f0d9a8','#c8a86a')}
+    <rect x="120" y="120" width="150" height="240" fill="#6b6b75" stroke="#1c1714" stroke-width="3"/>
+    <path d="M120 120 l-18 -28 M160 110 l8 -34 M210 110 l-6 -36 M255 120 l20 -30 M135 130 l-22 -10 M255 130 l24 -8" stroke="#9a9aa5" stroke-width="6" stroke-linecap="round"/>
+    ${face(195,160,34,'#f3c89a','smug')}${silverHair(195,160,34)}${crown(195,128,46)}
+    <rect x="170" y="200" width="50" height="120" rx="8" fill="#9e2b25" stroke="#1c1714" stroke-width="3"/>
+    <path d="M218 250 L 360 260" stroke="#1c1714" stroke-width="5" stroke-linecap="round" marker-end="url(#tip)"/>
+    ${face(420,250,30,'#f3c89a','happy')}${silverHair(420,250,30)}
+    <rect x="395" y="285" width="50" height="80" rx="8" fill="#3a4f7a" stroke="#1c1714" stroke-width="3"/>
+    <text x="420" y="345" font-size="13" text-anchor="middle" fill="#fff" font-weight="bold">Rhaenyra</text>
+    ${face(560,300,26,'#e8b98a','angry')}${face(630,300,26,'#d9a978','angry')}${face(700,300,26,'#e8b98a','angry')}
+    <text x="630" y="365" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">lordes (de saco cheio)</text>` },
+
+{ ep:"Temporada 1 · Traição da amizade", title:"A melhor amiga vira... madrasta",
+  text:"Otto Hightower empurra a filha Alicent pro rei viúvo. Rhaenyra: «ué, amiga?». Nasce Aegon II. Grupo de WhatsApp da amizade: encerrado.",
+  svg:`${bg('#e7d3b0','#bfa470')}
+    ${face(230,210,34,'#f3c89a','happy')}${silverHair(230,210,34)}${crown(230,178,44)}
+    <path d="M270 230 L 360 240" stroke="#9e2b25" stroke-width="5" stroke-linecap="round"/>
+    <text x="315" y="218" font-size="22" text-anchor="middle">💍</text>
+    ${face(420,210,32,'#f6d2a8','smug')}
+    <path d="M386 210 Q 388 175 420 172 Q 452 175 454 210 Q 420 196 386 210Z" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <rect x="392" y="246" width="56" height="90" rx="8" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <text x="420" y="356" font-size="13" text-anchor="middle" fill="#143a26" font-weight="bold">Alicent</text>
+    ${face(620,250,30,'#f3c89a','sad')}${silverHair(620,250,30)}
+    <text x="620" y="320" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">Rhaenyra: «sério?»</text>
+    <text x="560" y="120" font-size="46">💔</text>` },
+
+{ ep:"Temporada 1 · 10 anos depois", title:"Os filhos misteriosamente morenos",
+  text:"Rhaenyra casa com Laenor, mas os meninos têm cabelão escuro igual ao Sor Harwin. Todo mundo finge que não percebeu. A Alicent? Printou tudo.",
+  svg:`${bg('#f0d9a8','#c8a86a')}
+    ${face(180,180,32,'#f3c89a','happy')}${silverHair(180,180,32)}
+    <text x="180" y="250" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">Rhaenyra (loira)</text>
+    ${face(180,330,26,'#f0c69a','happy')}${darkHair(180,330,26)}
+    ${face(260,330,26,'#e8bd8e','happy')}${darkHair(260,330,26)}
+    ${face(340,330,26,'#f0c69a','happy')}${darkHair(340,330,26)}
+    <text x="260" y="395" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">os filhos (curiosamente morenos)</text>
+    ${face(560,180,30,'#d9a978','smug')}${darkHair(560,180,30)}
+    <rect x="535" y="215" width="50" height="90" rx="8" fill="#5b3a22" stroke="#1c1714" stroke-width="3"/>
+    <text x="560" y="135" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">Sor Harwin 👀</text>
+    <line x1="350" y1="320" x2="520" y2="220" stroke="#9e2b25" stroke-width="3" stroke-dasharray="8 6"/>
+    <text x="690" y="150" font-size="40">📸</text>` },
+
+{ ep:"Temporada 1 · Pirraça com asas", title:"Aemond rouba o maior dragão",
+  text:"O menino Aemond pega Vhagar (dragão tamanho família). Na briga, o priminho Luke corta o olho dele. Aemond ganha tapa-olho e um rancor eterno de brinde.",
+  svg:`${bg('#cfe7f2','#8fb8c8')}
+    ${dragon(540,210,1.4,'#3b6b4a',1,false)}
+    <text x="560" y="120" font-size="14" text-anchor="middle" fill="#143a26" font-weight="bold">Vhagar (gigante)</text>
+    ${face(220,260,34,'#f3c89a','shock')}${silverHair(220,260,34)}
+    <path d="M186 250 l16 16 M202 250 l-16 16" stroke="#9e2b25" stroke-width="4"/>
+    <path d="M180 248 q-14 0 -16 14 q16 -4 18 -4" fill="#1c1714"/>
+    <text x="220" y="335" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">Aemond (-1 olho)</text>
+    <text x="360" y="250" font-size="40">🔪</text>
+    ${face(420,300,24,'#f0c69a','angry')}${darkHair(420,300,24)}
+    <text x="420" y="360" font-size="13" text-anchor="middle" fill="#5b2b16" font-weight="bold">Luke</text>` },
+
+{ ep:"Temporada 1 · O grande mal-entendido", title:"As últimas palavras (mal ouvidas)",
+  text:"Viserys morre murmurando sobre uma profecia: «Aegon... o Príncipe Prometido». Alicent ouve só «Aegon» e pensa: «ele quer NOSSO filho no trono!». Maior ruído de comunicação da história.",
+  svg:`${bg('#3a2c44','#241a2e')}
+    <rect x="120" y="250" width="260" height="90" rx="14" fill="#6b5a44" stroke="#1c1714" stroke-width="3"/>
+    ${face(190,240,32,'#cdb89a','dead')}${silverHair(190,240,32)}${crown(190,210,42)}
+    <path d="M225 220 q 60 -30 95 -6" stroke="#fff" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+    <rect x="318" y="170" width="180" height="52" rx="14" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+    <text x="408" y="195" font-size="13" text-anchor="middle" fill="#1c1714">«Aegon... o Príncipe</text>
+    <text x="408" y="212" font-size="13" text-anchor="middle" fill="#1c1714">Prometido (profecia)»</text>
+    ${face(600,250,34,'#f6d2a8','shock')}
+    <path d="M566 250 Q 568 215 600 212 Q 632 215 634 250 Q 600 236 566 250Z" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <rect x="500" y="300" width="220" height="46" rx="14" fill="#2f7a4d" stroke="#1c1714" stroke-width="2.5"/>
+    <text x="610" y="329" font-size="13" text-anchor="middle" fill="#fff" font-weight="bold">«ELE QUER O AEGON NO TRONO!»</text>` },
+
+{ ep:"Temporada 1 · O golpe", title:"O golpe verde",
+  text:"Otto e Alicent coroam Aegon II às pressas, escondidos. Rhaenyra ainda nem sabe. O Conselho Verde inventou o «puxadinho» da linha sucessória.",
+  svg:`${bg('#dfe6cf','#a9c483')}
+    ${face(400,200,40,'#f3c89a','shock')}${silverHair(400,200,40)}${crown(400,162,56)}
+    <rect x="365" y="245" width="70" height="110" rx="10" fill="#9e2b25" stroke="#1c1714" stroke-width="3"/>
+    <text x="400" y="120" font-size="14" text-anchor="middle" fill="#3b6d11" font-weight="bold">Aegon II (coroado correndo)</text>
+    ${face(230,300,26,'#f6d2a8','smug')}
+    <path d="M204 300 Q 206 270 230 268 Q 254 270 256 300 Q 230 288 204 300Z" fill="#2f7a4d" stroke="#1c1714" stroke-width="2.5"/>
+    ${face(560,300,26,'#e9c79a','smug')}
+    <text x="560" y="265" font-size="22" text-anchor="middle">🎩</text>
+    <text x="395" y="395" font-size="13" text-anchor="middle" fill="#3b6d11" font-weight="bold">Conselho Verde tramando 🤫</text>` },
+
+{ ep:"Temporada 1 · Fim · GUERRA", title:"Tio come o sobrinho (literalmente)",
+  text:"Luke vai entregar carta de paz e topa com Aemond no céu. Vhagar, sem pedir licença, engole Luke e o dragãozinho dele. Aemond: «eu não quis... mas tá feito». E assim começa a guerra.",
+  svg:`${bg('#1f3a4a','#10222e')}
+    <path d="M0 120 q 100 -30 200 0 q 100 30 200 0 q 100 -30 200 0 q 100 30 200 0" stroke="#3a5a6e" stroke-width="2" fill="none" opacity=".6"/>
+    ${dragon(470,200,1.5,'#3b6b4a',-1,true)}
+    <text x="430" y="110" font-size="14" text-anchor="middle" fill="#aee0f2" font-weight="bold">Vhagar + Aemond</text>
+    ${dragon(180,300,0.6,'#7a3b8a',1,false)}
+    <text x="160" y="375" font-size="13" text-anchor="middle" fill="#e7b8f0" font-weight="bold">Luke (carta de paz 😬)</text>
+    <text x="330" y="250" font-size="40">😱</text>
+    <text x="400" y="430" font-size="16" text-anchor="middle" fill="#f0641e" font-weight="bold">⚔️ A DANÇA DOS DRAGÕES COMEÇA ⚔️</text>` },
+
+{ ep:"Temporada 2 · Vingança nota zero", title:"Sangue e Queijo",
+  text:"Daemon manda matar um filho do Aegon. Os capangas erram o alvo e decapitam o priminho bebê Jaehaerys na frente da mãe. Resultado: todo o reino passa a odiar os Pretos. Plano impecável (não).",
+  svg:`${bg('#2a1f2e','#181018')}
+    ${face(180,210,34,'#f3c89a','angry')}${silverHair(180,210,34)}
+    <text x="180" y="285" font-size="13" text-anchor="middle" fill="#e7b8f0" font-weight="bold">Daemon: «olho por olho»</text>
+    <path d="M220 210 L 320 220" stroke="#9e2b25" stroke-width="4" marker-end="url(#tip)"/>
+    ${face(420,220,26,'#d9b48a','smug')}<text x="420" y="178" font-size="20" text-anchor="middle">🗡️</text>
+    ${face(490,220,26,'#e2bf95','smug')}<text x="500" y="178" font-size="20" text-anchor="middle">🧀</text>
+    <text x="455" y="285" font-size="13" text-anchor="middle" fill="#c9b48b" font-weight="bold">Sangue &amp; Queijo</text>
+    ${face(640,300,30,'#f6d2a8','sad')}
+    <text x="640" y="360" font-size="13" text-anchor="middle" fill="#c9b48b" font-weight="bold">Helaena (horror)</text>
+    <text x="700" y="150" font-size="40">😭</text>` },
+
+{ ep:"Temporada 2 · Churrasco aéreo", title:"Rook's Rest: a primeira grande batalha",
+  text:"Rhaenys cai numa emboscada. Aegon chega bêbado de dragão pra «ajudar». Aemond grita «QUE SE EXPLODA» e torra os dois. Rhaenys morre, Aegon vira frango assado e entra em coma. Aemond assume como regente. Que conveniente.",
+  svg:`${bg('#4a2a1f','#2a160e')}
+    ${dragon(480,180,1.3,'#3b6b4a',-1,true)}
+    <text x="470" y="95" font-size="13" text-anchor="middle" fill="#ffd24a" font-weight="bold">Aemond + Vhagar</text>
+    ${dragon(210,250,0.85,'#b0392f',1,false)}
+    <text x="180" y="330" font-size="13" text-anchor="middle" fill="#f0b0a8" font-weight="bold">Rhaenys + Meleys ✝️</text>
+    ${dragon(330,330,0.7,'#e0a92a',-1,false)}
+    <text x="360" y="405" font-size="13" text-anchor="middle" fill="#ffe6a0" font-weight="bold">Aegon (bêbado) 🍷🔥</text>
+    <text x="600" y="300" font-size="40">🍗</text>` },
+
+{ ep:"Temporada 2 · Recrutamento", title:"Plebeus montando dragões",
+  text:"Rhaenyra precisa de poder de fogo e convoca bastardos com sangue Targaryen. Addam, Hugh e Ulf domam dragões selvagens. Mais dragões! Menos controle! O que poderia dar errado?",
+  svg:`${bg('#e7d3b0','#b89a66')}
+    ${face(150,200,28,'#e8bd8e','shock')}${dragon(180,300,0.5,'#9aa0a8',1,false)}
+    <text x="150" y="160" font-size="12" text-anchor="middle" fill="#5b2b16" font-weight="bold">Addam</text>
+    ${face(400,200,28,'#f0c69a','happy')}${dragon(430,300,0.5,'#8a6a2a',1,false)}
+    <text x="400" y="160" font-size="12" text-anchor="middle" fill="#5b2b16" font-weight="bold">Hugh · Vermithor</text>
+    ${face(650,200,28,'#e2bf95','smug')}${dragon(680,300,0.5,'#cfd4dc',1,false)}
+    <text x="650" y="160" font-size="12" text-anchor="middle" fill="#5b2b16" font-weight="bold">Ulf · Silverwing</text>
+    <text x="400" y="430" font-size="15" text-anchor="middle" fill="#9e2b25" font-weight="bold">poder de fogo 📈 · controle 📉</text>` },
+
+{ ep:"Temporada 2 · Diplomacia secreta", title:"A reunião secreta das rainhas",
+  text:"Alicent, de capuz, vai escondida até Rhaenyra: «e se a gente... parasse?». Oferece entregar o Aegon e Porto Real. 20 anos de guerra resolvidos num café? Quase.",
+  svg:`${bg('#3a3a4a','#20202c')}
+    ${face(250,230,34,'#f6d2a8','sad')}
+    <path d="M210 232 Q 250 175 290 232 Z" fill="#5a5a6e" stroke="#1c1714" stroke-width="3"/>
+    <text x="250" y="310" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Alicent (disfarçada 🧥)</text>
+    ${face(550,230,34,'#f3c89a','shock')}${silverHair(550,230,34)}${crown(550,198,44)}
+    <text x="550" y="310" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Rhaenyra</text>
+    <rect x="320" y="180" width="160" height="44" rx="14" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+    <text x="400" y="207" font-size="13" text-anchor="middle" fill="#1c1714">«e se a gente parasse?»</text>
+    <text x="400" y="420" font-size="14" text-anchor="middle" fill="#aee0f2">paz a um passo... 🕊️</text>` },
+
+{ ep:"Temporada 2 · Fim · cliffhanger", title:"Todo mundo marcha (e nada explode... ainda)",
+  text:"Daemon dobra o joelho, Aegon foge com o Larys, Aemond segura Vhagar, e exércitos + dragões marcham pra Batalha do Gullet. A pancadaria de verdade fica pra Temporada 3. Cliffhanger descarado!",
+  svg:`${bg('#2a3a2a','#16201a')}
+    ${face(150,210,28,'#f3c89a','angry')}${silverHair(150,210,28)}
+    <path d="M150 250 L 150 290" stroke="#1c1714" stroke-width="4"/>
+    <text x="150" y="320" font-size="12" text-anchor="middle" fill="#cde0c0" font-weight="bold">Daemon ajoelha</text>
+    ${face(400,200,28,'#f3c89a','shock')}${crown(400,170,38)}<text x="450" y="200" font-size="24">🏃💨</text>
+    <text x="400" y="265" font-size="12" text-anchor="middle" fill="#cde0c0" font-weight="bold">Aegon foge c/ Larys</text>
+    ${dragon(640,210,0.9,'#3b6b4a',-1,true)}
+    <text x="630" y="300" font-size="12" text-anchor="middle" fill="#ffd24a" font-weight="bold">Aemond + Vhagar</text>
+    <text x="400" y="370" font-size="15" text-anchor="middle" fill="#f0641e" font-weight="bold">➡️ rumo à BATALHA DO GULLET</text>
+    <text x="400" y="420" font-size="20" text-anchor="middle" fill="#e0a92a" font-weight="bold">CONTINUA NA TEMPORADA 3… 🐉</text>` },
+];
+
+/* ---------- montagem + player ---------- */
+const stage=document.getElementById('stage');
+const dotsBox=document.getElementById('dots');
+const defs=`<defs><marker id="tip" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="#1c1714" stroke-width="2"/></marker></defs>`;
+
+scenes.forEach((sc,i)=>{
+  const div=document.createElement('div');
+  div.className='scene';
+  div.innerHTML=`<svg viewBox="0 0 800 460" xmlns="${NS}" role="img" aria-label="${sc.title}">${defs}${sc.svg}</svg>`;
+  stage.appendChild(div);
+  const d=document.createElement('button');
+  d.className='dot'; d.title=sc.title;
+  d.onclick=()=>{ go(i); pause(); };
+  dotsBox.appendChild(d);
+});
+
+let cur=0, playing=true, t0=null, raf=null;
+const DUR=9000;
+const epEl=document.getElementById('ep'), titleEl=document.getElementById('title'),
+  textEl=document.getElementById('text'), counter=document.getElementById('counter'),
+  prog=document.getElementById('prog'), playBtn=document.getElementById('play');
+
+function render(){
+  [...stage.children].forEach((c,i)=>c.classList.toggle('active',i===cur));
+  [...dotsBox.children].forEach((c,i)=>c.classList.toggle('on',i===cur));
+  epEl.textContent=scenes[cur].ep;
+  titleEl.textContent=scenes[cur].title;
+  textEl.textContent=scenes[cur].text;
+  counter.textContent=`${cur+1} / ${scenes.length}`;
+}
+function go(i){ cur=(i+scenes.length)%scenes.length; t0=null; render(); }
+function tick(ts){
+  if(!playing) return;
+  if(t0===null) t0=ts;
+  const e=ts-t0;
+  prog.style.width=Math.min(100,(e/DUR)*100)+'%';
+  if(e>=DUR){ go(cur+1); }
+  raf=requestAnimationFrame(tick);
+}
+function play(){ playing=true; playBtn.textContent='⏸ Pausar'; t0=null; cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); }
+function pause(){ playing=false; playBtn.textContent='▶ Tocar'; cancelAnimationFrame(raf); }
+
+document.getElementById('next').onclick=()=>{ go(cur+1); if(playing)play(); };
+document.getElementById('prev').onclick=()=>{ go(cur-1); if(playing)play(); };
+playBtn.onclick=()=>{ playing?pause():play(); };
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'){go(cur+1); if(playing)play();}
+  if(e.key==='ArrowLeft'){go(cur-1); if(playing)play();}
+  if(e.key===' '){e.preventDefault(); playing?pause():play();}
+});
+
+/* ---------- música ---------- */
+const musicBtn=document.getElementById('music');
+const audioEl=document.getElementById('themeAudio');
+let musicOn=false, hasMp3=false, audioCtx=null, lookahead=null, masterGain=null, reverbNode=null;
+
+// detecta se existe um theme.mp3 do lado (ex.: site privado)
+audioEl.addEventListener('canplay',()=>{ hasMp3=true; });
+audioEl.addEventListener('error',()=>{ hasMp3=false; });
+
+// trilha original sintetizada — épica/sombria, clima GOT (sem copyright)
+const A=220;                          // Lá de referência
+const hz=n=>A*Math.pow(2,n/12);       // semitom -> frequência
+// progressão em Lá menor: Am – F – C – G  (i – VI – III – VII)
+const CHORDS=[ [0,3,7], [-4,0,5], [3,7,12], [-2,2,7] ];
+// melodia de cello — 8 colcheias por compasso (semitons rel. ao Lá, +1 oitava); null = silêncio
+const MEL=[
+  [12,null,7,null,12,15,14,12],
+  [12,null,8,null,15,17,15,12],
+  [19,null,15,null,12,15,19,17],
+  [14,null,10,7,null,7,5,7],
+];
+let bar=0, nextBarTime=0;
+const BARLEN=2.0;                     // duração do compasso (s) — andamento lento/épico
+
+function makeReverb(ctx){
+  const len=Math.floor(ctx.sampleRate*2.4), buf=ctx.createBuffer(2,len,ctx.sampleRate);
+  for(let ch=0;ch<2;ch++){ const d=buf.getChannelData(ch);
+    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2.6); }
+  const c=ctx.createConvolver(); c.buffer=buf; return c;
+}
+function voice(freq,t,dur,o){
+  o=o||{};
+  const osc=audioCtx.createOscillator(), g=audioCtx.createGain(), f=audioCtx.createBiquadFilter();
+  osc.type=o.type||'sawtooth'; osc.frequency.value=freq; osc.detune.value=o.detune||0;
+  f.type='lowpass'; f.frequency.value=o.cut||1200; f.Q.value=0.6;
+  const vol=o.vol||0.1, atk=o.attack||0.04;
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.linearRampToValueAtTime(vol,t+atk);
+  g.gain.setValueAtTime(vol,t+dur*0.55);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  osc.connect(f); f.connect(g); g.connect(masterGain); g.connect(reverbNode);
+  osc.start(t); osc.stop(t+dur+0.1);
+}
+function scheduleBar(t){
+  const ch=CHORDS[bar%CHORDS.length];
+  // pad de cordas (duas serras detuned por nota = som encorpado)
+  ch.forEach(s=>{
+    voice(hz(s),t,BARLEN,{type:'sawtooth',vol:0.04,cut:780,attack:0.6,detune:-7});
+    voice(hz(s),t,BARLEN,{type:'sawtooth',vol:0.04,cut:780,attack:0.6,detune:7});
+  });
+  // baixo grave (oitava abaixo da fundamental)
+  voice(hz(ch[0]-12),t,BARLEN,{type:'triangle',vol:0.18,cut:480,attack:0.02});
+  voice(hz(ch[0]-12),t,BARLEN,{type:'sine',vol:0.12,cut:380,attack:0.02});
+  // melodia de cello
+  const mel=MEL[bar%MEL.length], step=BARLEN/8;
+  mel.forEach((m,i)=>{ if(m===null) return;
+    voice(hz(m+12),t+i*step,step*1.7,{type:'sawtooth',vol:0.09,cut:1500,attack:0.03});
+  });
+  bar++;
+}
+function startSynth(){
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  masterGain=audioCtx.createGain(); masterGain.gain.value=0.75;
+  reverbNode=makeReverb(audioCtx);
+  const revGain=audioCtx.createGain(); revGain.gain.value=0.4;
+  const comp=audioCtx.createDynamicsCompressor();
+  reverbNode.connect(revGain); revGain.connect(comp);
+  masterGain.connect(comp); comp.connect(audioCtx.destination);
+  bar=0; nextBarTime=audioCtx.currentTime+0.15;
+  lookahead=setInterval(()=>{
+    while(nextBarTime < audioCtx.currentTime+0.6){ scheduleBar(nextBarTime); nextBarTime+=BARLEN; }
+  },130);
+}
+function stopSynth(){ if(lookahead){clearInterval(lookahead); lookahead=null;} if(audioCtx){audioCtx.close(); audioCtx=null;} }
+
+function musicStart(){
+  musicOn=true; musicBtn.textContent='🔈 Música';
+  if(hasMp3){ audioEl.volume=0.55; audioEl.play().catch(()=>{ startSynth(); }); }
+  else { startSynth(); }
+}
+function musicStop(){
+  musicOn=false; musicBtn.textContent='🔊 Música';
+  audioEl.pause(); stopSynth();
+}
+musicBtn.onclick=()=>{ musicOn?musicStop():musicStart(); };
+
+render();
+play();
+</script>
+</body>
+</html>
