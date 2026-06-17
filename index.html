@@ -60,6 +60,11 @@
   .bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--fire),var(--gold)); transition:width .12s linear;}
   footer{text-align:center; font-size:16px; color:#e9d3a0; margin-top:18px; line-height:1.5;}
   footer b{color:var(--gold); font-weight:bold;}
+  .topbar{display:flex; align-items:center; gap:10px; padding:8px 14px; background:#160f08; border-bottom:2px solid var(--gold);}
+  .topbar .ib{background:#241a10; color:#e9d3a0; border:2px solid #5c4210; border-radius:8px; padding:5px 11px; font-size:16px; cursor:pointer; box-shadow:0 2px 0 #000;}
+  .topbar .ib:active{transform:translateY(1px);}
+  .topbar .vlabel{font-size:11px; letter-spacing:2px; color:#c9b48b; font-weight:bold;}
+  .topbar input[type=range]{flex:1; max-width:220px; accent-color:var(--gold); cursor:pointer;}
 </style>
 </head>
 <body>
@@ -70,6 +75,11 @@
   </header>
 
   <div class="tv">
+    <div class="topbar">
+      <button class="ib" id="muteBtn" aria-label="Ligar/desligar som">🔊</button>
+      <span class="vlabel">VOLUME</span>
+      <input type="range" id="vol" min="0" max="100" value="55" aria-label="Volume">
+    </div>
     <div class="stage" id="stage"></div>
     <div class="cap">
       <div class="ep" id="ep"></div>
@@ -84,7 +94,6 @@
     <button class="ghost" id="prev">⟵ Anterior</button>
     <button id="play">⏸ Pausar</button>
     <button class="ghost" id="next">Próximo ⟶</button>
-    <button class="ghost" id="music">🔊 Música</button>
     <span class="counter" id="counter"></span>
   </div>
   <audio id="themeAudio" loop preload="auto">
@@ -272,6 +281,48 @@ const scenes = [
     <text x="640" y="360" font-size="13" text-anchor="middle" fill="#c9b48b" font-weight="bold">Helaena (horror)</text>
     <text x="700" y="150" font-size="40">😭</text>` },
 
+{ ep:"Temporada 2 · Irmão contra irmão", title:"Os gêmeos Cargyll se enfrentam",
+  text:"Os Verdes mandam um gêmeo da Guarda Real se passar pelo irmão pra assassinar Rhaenyra. Resultado: os dois irmãos idênticos acabam se matando num duelo — e ninguém conseguia distinguir quem era quem. Crise de identidade nível lendário.",
+  svg:`${bg('#33303f','#1c1a26')}
+    ${face(280,200,34,'#f3c89a','angry')}
+    <rect x="250" y="232" width="60" height="100" rx="8" fill="#b8b8c2" stroke="#1c1714" stroke-width="3"/>
+    ${face(520,200,34,'#f3c89a','angry')}
+    <rect x="490" y="232" width="60" height="100" rx="8" fill="#b8b8c2" stroke="#1c1714" stroke-width="3"/>
+    <path d="M322 252 L 398 218" stroke="#cfd4dc" stroke-width="6" stroke-linecap="round"/>
+    <path d="M478 252 L 402 218" stroke="#cfd4dc" stroke-width="6" stroke-linecap="round"/>
+    <text x="400" y="210" font-size="34" text-anchor="middle">💥</text>
+    <text x="280" y="360" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Sor Erryk</text>
+    <text x="520" y="360" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Sor Arryk</text>
+    <text x="400" y="405" font-size="15" text-anchor="middle" fill="#e7b8f0" font-weight="bold">«peraí, qual é qual?!» 🤯</text>` },
+
+{ ep:"Temporada 2 · Infiltração", title:"Rhaenyra entra disfarçada em Porto Real",
+  text:"Rhaenyra se disfarça de plebeia e arrisca a própria vida entrando na capital inimiga pra encontrar Alicent escondida dentro do Grande Septo. Implora pela paz; Alicent, ainda presa ao mal-entendido das últimas palavras do rei, recusa. Diplomacia: 0.",
+  svg:`${bg('#2c2740','#171327')}
+    <rect x="120" y="252" width="8" height="42" fill="#caa15a"/><text x="124" y="246" font-size="20" text-anchor="middle">🔥</text>
+    <rect x="672" y="252" width="8" height="42" fill="#caa15a"/><text x="676" y="246" font-size="20" text-anchor="middle">🔥</text>
+    ${face(280,235,32,'#f3c89a','sad')}
+    <path d="M248 208 Q 280 170 312 208 L 312 220 Q 280 196 248 220 Z" fill="#6b5a44" stroke="#1c1714" stroke-width="3"/>
+    <text x="280" y="305" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Rhaenyra (disfarçada)</text>
+    ${face(520,235,32,'#f6d2a8','angry')}
+    <path d="M488 208 Q 520 170 552 208 L 552 220 Q 520 196 488 220 Z" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <text x="520" y="305" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Alicent</text>
+    <rect x="298" y="148" width="204" height="44" rx="14" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
+    <text x="400" y="175" font-size="13" text-anchor="middle" fill="#1c1714">«vamos parar essa guerra?»</text>
+    <text x="400" y="410" font-size="15" text-anchor="middle" fill="#f0997b" font-weight="bold">Alicent: «...não dá.» 🚪</text>` },
+
+{ ep:"Temporada 2 · Castelo amaldiçoado", title:"Daemon surta em Harrenhal",
+  text:"Daemon toma o castelo gigante de Harrenhal sozinho — e ganha de brinde pesadelos em alta definição, fantasmas do passado e a feiticeira misteriosa Alys Rivers mexendo com a cabeça dele. O Airbnb pior avaliado de Westeros: assombrado, com crise existencial inclusa.",
+  svg:`${bg('#22332a','#0f1a13')}
+    ${face(300,245,34,'#f3c89a','shock')}${silverHair(300,245,34)}
+    <text x="300" y="328" font-size="13" text-anchor="middle" fill="#bfe0c8" font-weight="bold">Daemon (perdendo a linha)</text>
+    <text x="170" y="150" font-size="34">👻</text>
+    <text x="430" y="138" font-size="30">👻</text>
+    <text x="150" y="320" font-size="28">💀</text>
+    <path d="M524 280 Q 560 175 596 280 Z" fill="#2a1828" stroke="#1c1714" stroke-width="3"/>
+    <circle cx="548" cy="232" r="5" fill="#e24b4a"/><circle cx="572" cy="232" r="5" fill="#e24b4a"/>
+    <text x="560" y="320" font-size="13" text-anchor="middle" fill="#f0a0a0" font-weight="bold">Alys Rivers 🔮</text>
+    <text x="400" y="408" font-size="15" text-anchor="middle" fill="#9ad0b0" font-weight="bold">visões em 4K, sem pedir 😵</text>` },
+
 { ep:"Temporada 2 · Churrasco aéreo", title:"Rook's Rest: a primeira grande batalha",
   text:"Rhaenys cai numa emboscada. Aegon chega bêbado de dragão pra «ajudar». Aemond grita «QUE SE EXPLODA» e torra os dois. Rhaenys morre, Aegon vira frango assado e entra em coma. Aemond assume como regente. Que conveniente.",
   svg:`${bg('#4a2a1f','#2a160e')}
@@ -282,6 +333,22 @@ const scenes = [
     ${dragon(330,330,0.7,'#e0a92a',-1,false)}
     <text x="360" y="405" font-size="13" text-anchor="middle" fill="#ffe6a0" font-weight="bold">Aegon (bêbado) 🍷🔥</text>
     <text x="600" y="300" font-size="40">🍗</text>` },
+
+{ ep:"Temporada 2 · Regência", title:"Aemond demite o próprio avô",
+  text:"Com Aegon em coma, Aemond assume como regente e logo manda embora o avô Otto Hightower — justo a única pessoa com bom senso no conselho. Novo lema do governo: na dúvida, toca fogo em alguém. O que poderia dar errado?",
+  svg:`${bg('#3a2a2a','#1e1414')}
+    <rect x="340" y="120" width="130" height="220" fill="#6b6b75" stroke="#1c1714" stroke-width="3"/>
+    <path d="M340 120 l-16 -26 M380 112 l8 -30 M430 112 l-6 -32 M470 120 l18 -28" stroke="#9a9aa5" stroke-width="6" stroke-linecap="round"/>
+    ${face(405,165,32,'#f3c89a','smug')}${silverHair(405,165,32)}${crown(405,133,42)}
+    <circle cx="392" cy="152" r="9" fill="#1c1714"/>
+    <path d="M374 143 q 30 -7 40 6" stroke="#1c1714" stroke-width="3" fill="none"/>
+    <rect x="380" y="200" width="50" height="110" rx="8" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <text x="405" y="335" font-size="13" text-anchor="middle" fill="#f0c0a0" font-weight="bold">Aemond, o regente</text>
+    ${face(630,250,28,'#e9d3b0','sad')}
+    <path d="M602 230 Q 604 206 630 203 Q 656 206 658 230 Q 630 220 602 230Z" fill="#d8d8de" stroke="#1c1714" stroke-width="2.5"/>
+    <text x="692" y="244" font-size="28">🚪</text>
+    <text x="630" y="320" font-size="13" text-anchor="middle" fill="#f0c0a0" font-weight="bold">vovô Otto 👋 tchau</text>
+    <text x="195" y="255" font-size="40">🔥</text>` },
 
 { ep:"Temporada 2 · Recrutamento", title:"Plebeus montando dragões",
   text:"Rhaenyra precisa de poder de fogo e convoca bastardos com sangue Targaryen. Addam, Hugh e Ulf domam dragões selvagens. Mais dragões! Menos controle! O que poderia dar errado?",
@@ -372,13 +439,13 @@ document.addEventListener('keydown',e=>{
 });
 
 /* ---------- música ---------- */
-const musicBtn=document.getElementById('music');
 const audioEl=document.getElementById('themeAudio');
-let musicOn=false, hasMp3=false, audioCtx=null, lookahead=null, masterGain=null, reverbNode=null;
+const muteBtn=document.getElementById('muteBtn');
+const volSlider=document.getElementById('vol');
+let musicOn=true, mp3Failed=false, audioCtx=null, lookahead=null, masterGain=null, reverbNode=null, curVol=0.55, muted=false, started=false;
 
-// detecta se existe um theme.mp3 do lado (ex.: site privado)
-audioEl.addEventListener('canplay',()=>{ hasMp3=true; });
-audioEl.addEventListener('error',()=>{ hasMp3=false; });
+// se nao houver theme.mp3 (ex.: rodando local sem o arquivo), cai pra trilha sintetizada
+audioEl.addEventListener('error',()=>{ mp3Failed=true; });
 
 // trilha original sintetizada — épica/sombria, clima GOT (sem copyright)
 const A=220;                          // Lá de referência
@@ -433,7 +500,7 @@ function scheduleBar(t){
 }
 function startSynth(){
   audioCtx=new (window.AudioContext||window.webkitAudioContext)();
-  masterGain=audioCtx.createGain(); masterGain.gain.value=0.75;
+  masterGain=audioCtx.createGain(); masterGain.gain.value=muted?0:curVol;
   reverbNode=makeReverb(audioCtx);
   const revGain=audioCtx.createGain(); revGain.gain.value=0.4;
   const comp=audioCtx.createDynamicsCompressor();
@@ -446,16 +513,37 @@ function startSynth(){
 }
 function stopSynth(){ if(lookahead){clearInterval(lookahead); lookahead=null;} if(audioCtx){audioCtx.close(); audioCtx=null;} }
 
-function musicStart(){
-  musicOn=true; musicBtn.textContent='🔈 Música';
-  if(hasMp3){ audioEl.volume=0.55; audioEl.play().catch(()=>{ startSynth(); }); }
-  else { startSynth(); }
+function applyVol(){ const v=muted?0:curVol; if(masterGain) masterGain.gain.value=v; audioEl.volume=v; }
+function refreshIcon(){ muteBtn.textContent=(muted||curVol===0||!musicOn)?'🔇':'🔊'; }
+
+// inicia o áudio (mp3 real se existir; senão a trilha sintetizada)
+function beginAudio(){
+  if(started || !musicOn) return;
+  if(!mp3Failed){
+    audioEl.volume=muted?0:curVol;
+    const p=audioEl.play();
+    if(p&&p.then) p.then(()=>{ started=true; }).catch(()=>{});  // bloqueado: espera 1º gesto
+  }
+  if(mp3Failed && !audioCtx){ startSynth(); started=true; }
+  if(audioCtx && audioCtx.state==='suspended') audioCtx.resume();
+  refreshIcon();
 }
-function musicStop(){
-  musicOn=false; musicBtn.textContent='🔊 Música';
-  audioEl.pause(); stopSynth();
-}
-musicBtn.onclick=()=>{ musicOn?musicStop():musicStart(); };
+
+muteBtn.onclick=()=>{
+  if(!musicOn){ musicOn=true; started=false; beginAudio(); }
+  else { muted=!muted; }
+  applyVol(); refreshIcon();
+};
+volSlider.oninput=()=>{
+  curVol=volSlider.value/100;
+  if(curVol>0){ muted=false; if(!musicOn){ musicOn=true; started=false; } beginAudio(); }
+  applyVol(); refreshIcon();
+};
+
+// AUTOPLAY: tenta tocar já; se o navegador bloquear, começa no 1º clique/toque/tecla
+beginAudio();
+['pointerdown','keydown','touchstart','click'].forEach(ev=>
+  document.addEventListener(ev,function onceGo(){ beginAudio(); document.removeEventListener(ev,onceGo); },{once:true}));
 
 render();
 play();
