@@ -58,14 +58,15 @@
   .dot.on{background:var(--gold); box-shadow:0 0 8px var(--gold);}
   .bar{height:5px; background:#2a2018; border-radius:3px; overflow:hidden; margin-top:10px;}
   .bar > i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--fire),var(--gold)); transition:width .12s linear;}
-  footer{text-align:center; font-size:12px; color:#7d6b4d; margin-top:14px;}
+  footer{text-align:center; font-size:16px; color:#e9d3a0; margin-top:18px; line-height:1.5;}
+  footer b{color:var(--gold); font-weight:bold;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <h1>🐉 House of the Dragon — O Resumo Cartunesco</h1>
-    <p>Temporadas 1 &amp; 2 · versão satírica · desenhada à mão (em vetor)</p>
+    <h1>🐉 House of the Dragon — O Resumo</h1>
+    <p>Temporadas 1 &amp; 2</p>
   </header>
 
   <div class="tv">
@@ -91,7 +92,7 @@
   </audio>
   <div class="dots" id="dots"></div>
 
-  <footer>Cada cena fica ~9s · clique nas bolinhas pra pular · feito por Claude, traço por traço 🎨</footer>
+  <footer>Cada cena fica ~15s · clique nas bolinhas pra pular · feito com ❤️ por <b>Tchu</b></footer>
 </div>
 
 <script>
@@ -336,7 +337,7 @@ scenes.forEach((sc,i)=>{
 });
 
 let cur=0, playing=true, t0=null, raf=null;
-const DUR=9000;
+const DUR=15000;
 const epEl=document.getElementById('ep'), titleEl=document.getElementById('title'),
   textEl=document.getElementById('text'), counter=document.getElementById('counter'),
   prog=document.getElementById('prog'), playBtn=document.getElementById('play');
