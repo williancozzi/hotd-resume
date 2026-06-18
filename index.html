@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>House of the Dragon - Resumo (T1 & T2)</title>
+<title>House of the Dragon — Resumo (T1 & T2)</title>
 <style>
   :root{
     --ink:#1c1714; --paper:#f4e9d2; --gold:#e0a92a; --fire:#f0641e;
@@ -36,7 +36,7 @@
   .scene svg{width:100%; height:100%; display:block;}
   .cap{
     background:linear-gradient(180deg,#1a130c,#0c0906);
-    border-top:3px solid var(--gold); padding:14px 20px 16px; min-height:118px;
+    border-top:3px solid var(--gold); padding:14px 20px 16px; height:150px; overflow-y:auto;
   }
   .cap .ep{font-size:11px; letter-spacing:2px; color:var(--fire); text-transform:uppercase; font-weight:bold;}
   .cap h2{font-size:19px; color:var(--gold); margin:2px 0 6px;}
@@ -81,7 +81,7 @@
     .tv{border-width:4px; border-radius:12px;}
     .topbar{padding:6px 10px; gap:8px;}
     .topbar input[type=range]{max-width:none;}
-    .cap{padding:10px 14px 12px; min-height:92px;}
+    .cap{padding:10px 14px 12px; height:165px; overflow-y:auto;}
     .cap .ep{font-size:10px; letter-spacing:1.5px;}
     .cap h2{font-size:16px;}
     .cap p{font-size:13.5px; line-height:1.45;}
@@ -101,7 +101,7 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>🐉 House of the Dragon - O Resumo</h1>
+    <h1>🐉 House of the Dragon — O Resumo</h1>
     <p>Temporadas 1 &amp; 2</p>
   </header>
 
@@ -142,7 +142,7 @@
     <div class="dots" id="dots"></div>
 
     <p class="hint">clique nas bolinhas pra pular · cada cena ~30s</p>
-    <footer>2026 - feito com ❤️ por <b>Tchu</b></footer>
+    <footer>2026 — feito com ❤️ por <b>Tchu</b></footer>
   </div>
 </div>
 
@@ -214,7 +214,7 @@ function dragon(x,y,s,color,dir,fire){
 function bg(c1,c2){
   return `<rect width="800" height="460" fill="${c1}"/><rect y="300" width="800" height="160" fill="${c2}"/>`;
 }
-// Trono de Ferro (cadeira de espadas) - cx = centro, sy = altura do assento
+// Trono de Ferro (cadeira de espadas) — cx = centro, sy = altura do assento
 function throne(cx,sy){
   const top=sy-24;
   const blade=(dx,h,tilt)=>{const bx=cx+dx,ty=top-h,tx=bx+tilt;return `<path d="M${bx-8} ${top} L${tx} ${ty} L${bx+8} ${top} Z" fill="#7c7c87" stroke="#1c1714" stroke-width="2" stroke-linejoin="round"/><path d="M${bx-2} ${top} L${tx} ${ty}" stroke="#b6b6bf" stroke-width="1.5"/>`;};
@@ -331,7 +331,7 @@ const scenes = [
     <text x="700" y="150" font-size="40">😭</text>` },
 
 { ep:"Temporada 2 · Irmão contra irmão", title:"Os gêmeos Cargyll se enfrentam",
-  text:"Os Verdes mandam um gêmeo da Guarda Real se passar pelo irmão pra assassinar Rhaenyra. Resultado: os dois irmãos idênticos acabam se matando num duelo - e ninguém conseguia distinguir quem era quem. Crise de identidade nível lendário.",
+  text:"Os Verdes mandam um gêmeo da Guarda Real se passar pelo irmão pra assassinar Rhaenyra. Resultado: os dois irmãos idênticos acabam se matando num duelo — e ninguém conseguia distinguir quem era quem. Crise de identidade nível lendário.",
   svg:`${bg('#33303f','#1c1a26')}
     ${face(280,200,34,'#f3c89a','angry')}
     <rect x="250" y="232" width="60" height="100" rx="8" fill="#b8b8c2" stroke="#1c1714" stroke-width="3"/>
@@ -360,7 +360,7 @@ const scenes = [
     <text x="400" y="410" font-size="15" text-anchor="middle" fill="#f0997b" font-weight="bold">Alicent: «...não dá.» 🚪</text>` },
 
 { ep:"Temporada 2 · Castelo amaldiçoado", title:"Daemon surta em Harrenhal",
-  text:"Daemon toma o castelo gigante de Harrenhal sozinho - e ganha de brinde pesadelos em alta definição, fantasmas do passado e a feiticeira misteriosa Alys Rivers mexendo com a cabeça dele. O Airbnb pior avaliado de Westeros: assombrado, com crise existencial inclusa.",
+  text:"Daemon toma o castelo gigante de Harrenhal sozinho — e ganha de brinde pesadelos em alta definição, fantasmas do passado e a feiticeira misteriosa Alys Rivers mexendo com a cabeça dele. O Airbnb pior avaliado de Westeros: assombrado, com crise existencial inclusa.",
   svg:`${bg('#22332a','#0f1a13')}
     <rect x="678" y="338" width="24" height="80" rx="4" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
     <circle cx="655" cy="330" r="27" fill="#5b3a22" stroke="#1c1714" stroke-width="3"/>
@@ -389,7 +389,7 @@ const scenes = [
     <text x="600" y="300" font-size="40">🍗</text>` },
 
 { ep:"Temporada 2 · Regência", title:"Aemond demite o próprio avô",
-  text:"Com Aegon em coma, Aemond assume como regente e logo manda embora o avô Otto Hightower - justo a única pessoa com bom senso no conselho. Novo lema do governo: na dúvida, toca fogo em alguém. O que poderia dar errado?",
+  text:"Com Aegon em coma, Aemond assume como regente e logo manda embora o avô Otto Hightower — justo a única pessoa com bom senso no conselho. Novo lema do governo: na dúvida, toca fogo em alguém. O que poderia dar errado?",
   svg:`${bg('#3a2a2a','#1e1414')}
     ${throne(405,205)}
     ${face(405,165,32,'#f3c89a','smug')}${silverHair(405,165,32)}${crown(405,133,42)}
@@ -427,8 +427,8 @@ const scenes = [
     <text x="400" y="207" font-size="13" text-anchor="middle" fill="#1c1714">«e se a gente parasse?»</text>
     <text x="400" y="420" font-size="14" text-anchor="middle" fill="#aee0f2">paz a um passo... 🕊️</text>` },
 
-{ ep:"Temporada 2 · Fim · pra próxima", title:"Todo mundo marcha (e nada explode... ainda)",
-  text:"Daemon dobra o joelho, Aegon foge com o Larys, Aemond segura Vhagar, e exércitos + dragões marcham pra Batalha do Gullet. A pancadaria de verdade fica pra Temporada 3 - cortaram bem no melhor, que sacanagem!",
+{ ep:"Temporada 2 · Fim · fica pra próxima", title:"Todo mundo marcha (e nada explode... ainda)",
+  text:"Daemon dobra o joelho, Aegon foge com o Larys, Aemond segura Vhagar, e exércitos + dragões marcham pra Batalha do Gullet. A pancadaria de verdade fica pra Temporada 3 - cortaram bem no melhor, que sacanagem...",
   svg:`${bg('#2a3a2a','#16201a')}
     ${face(150,210,28,'#f3c89a','angry')}${silverHair(150,210,28)}
     <path d="M150 250 L 150 290" stroke="#1c1714" stroke-width="4"/>
@@ -504,12 +504,12 @@ let musicOn=true, mp3Failed=false, audioCtx=null, lookahead=null, masterGain=nul
 // se nao houver theme.mp3 (ex.: rodando local sem o arquivo), cai pra trilha sintetizada
 audioEl.addEventListener('error',()=>{ mp3Failed=true; });
 
-// trilha original sintetizada - épica/sombria, clima GOT (sem copyright)
+// trilha original sintetizada — épica/sombria, clima GOT (sem copyright)
 const A=220;                          // Lá de referência
 const hz=n=>A*Math.pow(2,n/12);       // semitom -> frequência
-// progressão em Lá menor: Am - F - C - G  (i - VI - III - VII)
+// progressão em Lá menor: Am – F – C – G  (i – VI – III – VII)
 const CHORDS=[ [0,3,7], [-4,0,5], [3,7,12], [-2,2,7] ];
-// melodia de cello - 8 colcheias por compasso (semitons rel. ao Lá, +1 oitava); null = silêncio
+// melodia de cello — 8 colcheias por compasso (semitons rel. ao Lá, +1 oitava); null = silêncio
 const MEL=[
   [12,null,7,null,12,15,14,12],
   [12,null,8,null,15,17,15,12],
@@ -517,7 +517,7 @@ const MEL=[
   [14,null,10,7,null,7,5,7],
 ];
 let bar=0, nextBarTime=0;
-const BARLEN=2.0;                     // duração do compasso (s) - andamento lento/épico
+const BARLEN=2.0;                     // duração do compasso (s) — andamento lento/épico
 
 function makeReverb(ctx){
   const len=Math.floor(ctx.sampleRate*2.4), buf=ctx.createBuffer(2,len,ctx.sampleRate);
