@@ -89,7 +89,6 @@
       <p class="introSub">O Resumo · Temporadas 1 &amp; 2</p>
       <p class="introMsg">E aí, vamos recapitular o que rolou até agora em House of the Dragon?</p>
       <button class="bigplay" id="startBtn">▶ Começar</button>
-      <p class="introDisc">Resumo cartunesco e não-oficial, feito por fã · sem vínculo com a HBO</p>
     </div>
     <div class="topbar">
       <button class="ib" id="muteBtn" aria-label="Ligar/desligar som">🔊</button>
@@ -154,9 +153,9 @@ function face(cx,cy,r,skin,mood){
   }
   return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${skin}" stroke="#1c1714" stroke-width="3"/>${eyes}${mouth}`;
 }
-// cabelo prata Targaryen (calota)
+// cabelo loiro Targaryen (calota)
 function silverHair(cx,cy,r){
-  return `<path d="M${cx-r-3} ${cy} Q ${cx-r} ${cy-r-12} ${cx} ${cy-r-14} Q ${cx+r} ${cy-r-12} ${cx+r+3} ${cy} Q ${cx+r*0.7} ${cy-r*0.5} ${cx} ${cy-r*0.55} Q ${cx-r*0.7} ${cy-r*0.5} ${cx-r-3} ${cy} Z" fill="#dcdce3" stroke="#1c1714" stroke-width="3"/>`;
+  return `<path d="M${cx-r-3} ${cy} Q ${cx-r} ${cy-r-12} ${cx} ${cy-r-14} Q ${cx+r} ${cy-r-12} ${cx+r+3} ${cy} Q ${cx+r*0.7} ${cy-r*0.5} ${cx} ${cy-r*0.55} Q ${cx-r*0.7} ${cy-r*0.5} ${cx-r-3} ${cy} Z" fill="#f0d873" stroke="#1c1714" stroke-width="3"/>`;
 }
 // cabelo escuro (Strong)
 function darkHair(cx,cy,r){
@@ -175,7 +174,7 @@ function dragon(x,y,s,color,dir,fire){
       <path d="M0 0 L ${f*70*s} ${-14*s} L ${f*40*s} 0 L ${f*78*s} ${10*s} L ${f*42*s} ${10*s} L ${f*70*s} ${24*s} L 0 ${14*s} Z" fill="#f0641e" stroke="#9e2b25" stroke-width="2"/>
       <path d="M${f*8*s} ${3*s} L ${f*52*s} ${-4*s} L ${f*30*s} ${6*s} L ${f*54*s} ${14*s} L ${f*10*s} ${11*s} Z" fill="#ffd24a"/>
     </g>`:'';
-  return `<g transform="translate(${x},${y}) scale(${f},1)">
+  return `<g transform="translate(${x},${y}) scale(${f*s},${s})">
     <path d="M-10 30 Q -120 10 -150 60 Q -110 50 -70 50 Q -110 70 -120 110 Q -80 70 -30 55 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
     <ellipse cx="20" cy="40" rx="70" ry="42" fill="${color}" stroke="#1c1714" stroke-width="3"/>
     <path d="M30 10 Q 60 -60 110 -40 Q 80 -10 70 20 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
@@ -320,7 +319,7 @@ const scenes = [
     <path d="M248 208 Q 280 170 312 208 L 312 220 Q 280 196 248 220 Z" fill="#6b5a44" stroke="#1c1714" stroke-width="3"/>
     <text x="280" y="305" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Rhaenyra (disfarçada)</text>
     ${face(520,235,32,'#f6d2a8','angry')}
-    <path d="M488 208 Q 520 170 552 208 L 552 220 Q 520 196 488 220 Z" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <path d="M488 208 Q 520 170 552 208 L 552 220 Q 520 196 488 220 Z" fill="#9e2b25" stroke="#1c1714" stroke-width="3"/>
     <text x="520" y="305" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Alicent</text>
     <rect x="298" y="148" width="204" height="44" rx="14" fill="#fff" stroke="#1c1714" stroke-width="2.5"/>
     <text x="400" y="175" font-size="13" text-anchor="middle" fill="#1c1714">«vamos parar essa guerra?»</text>
@@ -344,7 +343,7 @@ const scenes = [
   svg:`${bg('#4a2a1f','#2a160e')}
     ${dragon(480,180,1.3,'#3b6b4a',-1,true)}
     <text x="470" y="95" font-size="13" text-anchor="middle" fill="#ffd24a" font-weight="bold">Aemond + Vhagar</text>
-    ${dragon(210,250,0.85,'#b0392f',1,false)}
+    ${dragon(210,250,0.85,'#3b6b4a',1,false)}
     <text x="180" y="330" font-size="13" text-anchor="middle" fill="#f0b0a8" font-weight="bold">Rhaenys + Meleys ✝️</text>
     ${dragon(330,330,0.7,'#e0a92a',-1,false)}
     <text x="360" y="405" font-size="13" text-anchor="middle" fill="#ffe6a0" font-weight="bold">Aegon (bêbado) 🍷🔥</text>
@@ -380,6 +379,7 @@ const scenes = [
 { ep:"Temporada 2 · Diplomacia secreta", title:"A reunião secreta das rainhas",
   text:"Alicent, de capuz, vai escondida até Rhaenyra: «e se a gente... parasse?». Oferece entregar o Aegon e Porto Real. 20 anos de guerra resolvidos num café? Quase.",
   svg:`${bg('#3a3a4a','#20202c')}
+    ${dragon(700,115,0.35,'#d9b84a',-1,false)}
     ${face(250,230,34,'#f6d2a8','sad')}
     <path d="M210 232 Q 250 175 290 232 Z" fill="#5a5a6e" stroke="#1c1714" stroke-width="3"/>
     <text x="250" y="310" font-size="13" text-anchor="middle" fill="#cdd0e0" font-weight="bold">Alicent (disfarçada 🧥)</text>
@@ -397,7 +397,7 @@ const scenes = [
     <text x="150" y="320" font-size="12" text-anchor="middle" fill="#cde0c0" font-weight="bold">Daemon ajoelha</text>
     ${face(400,200,28,'#f3c89a','shock')}${crown(400,170,38)}<text x="450" y="200" font-size="24">🏃💨</text>
     <text x="400" y="265" font-size="12" text-anchor="middle" fill="#cde0c0" font-weight="bold">Aegon foge c/ Larys</text>
-    ${dragon(640,210,0.9,'#3b6b4a',-1,true)}
+    ${dragon(640,210,0.9,'#b0392f',-1,true)}
     <text x="630" y="300" font-size="12" text-anchor="middle" fill="#ffd24a" font-weight="bold">Aemond + Vhagar</text>
     <text x="400" y="370" font-size="15" text-anchor="middle" fill="#f0641e" font-weight="bold">➡️ rumo à BATALHA DO GULLET</text>
     <text x="400" y="420" font-size="20" text-anchor="middle" fill="#e0a92a" font-weight="bold">CONTINUA NA TEMPORADA 3… 🐉</text>` },
