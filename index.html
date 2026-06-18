@@ -214,14 +214,21 @@ function dragon(x,y,s,color,dir,fire){
 function bg(c1,c2){
   return `<rect width="800" height="460" fill="${c1}"/><rect y="300" width="800" height="160" fill="${c2}"/>`;
 }
+// Trono de Ferro (cadeira de espadas) — cx = centro, sy = altura do assento
+function throne(cx,sy){
+  const top=sy-24;
+  const blade=(dx,h,tilt)=>{const bx=cx+dx,ty=top-h,tx=bx+tilt;return `<path d="M${bx-8} ${top} L${tx} ${ty} L${bx+8} ${top} Z" fill="#7c7c87" stroke="#1c1714" stroke-width="2" stroke-linejoin="round"/><path d="M${bx-2} ${top} L${tx} ${ty}" stroke="#b6b6bf" stroke-width="1.5"/>`;};
+  let bl='';
+  [[-70,90,-20],[-46,128,-10],[-18,158,-3],[16,156,4],[44,126,11],[70,88,20]].forEach(b=>bl+=blade(b[0],b[1],b[2]));
+  return `${bl}<path d="M${cx-82} ${sy+158} L${cx-78} ${top} L${cx+78} ${top} L${cx+82} ${sy+158} Z" fill="#43434c" stroke="#1c1714" stroke-width="3"/><rect x="${cx-58}" y="${sy}" width="116" height="22" fill="#5a5a64" stroke="#1c1714" stroke-width="2.5"/><path d="M${cx-78} ${sy+34} L${cx-112} ${sy-10} L${cx-70} ${sy+12} Z" fill="#7c7c87" stroke="#1c1714" stroke-width="2"/><path d="M${cx+78} ${sy+34} L${cx+112} ${sy-10} L${cx+70} ${sy+12} Z" fill="#7c7c87" stroke="#1c1714" stroke-width="2"/><rect x="${cx-92}" y="${sy+158}" width="184" height="18" rx="3" fill="#2c2c33" stroke="#1c1714" stroke-width="3"/>`;
+}
 
 /* ---------- as cenas ---------- */
 const scenes = [
 { ep:"Temporada 1 · O estopim", title:"A escolha que estragou tudo",
   text:"Rei Viserys, sem filho homem, aponta pra filha Rhaenyra: «você é minha herdeira!». Os lordes juram lealdade de cara amarrada. Spoiler: ninguém ia respeitar isso.",
   svg:`${bg('#f0d9a8','#c8a86a')}
-    <rect x="120" y="120" width="150" height="240" fill="#6b6b75" stroke="#1c1714" stroke-width="3"/>
-    <path d="M120 120 l-18 -28 M160 110 l8 -34 M210 110 l-6 -36 M255 120 l20 -30 M135 130 l-22 -10 M255 130 l24 -8" stroke="#9a9aa5" stroke-width="6" stroke-linecap="round"/>
+    ${throne(195,205)}
     ${face(195,160,34,'#f3c89a','smug')}${silverHair(195,160,34)}${crown(195,128,46)}
     <rect x="170" y="200" width="50" height="120" rx="8" fill="#9e2b25" stroke="#1c1714" stroke-width="3"/>
     <path d="M218 250 L 360 260" stroke="#1c1714" stroke-width="5" stroke-linecap="round" marker-end="url(#tip)"/>
@@ -311,7 +318,7 @@ const scenes = [
     <text x="400" y="430" font-size="16" text-anchor="middle" fill="#f0641e" font-weight="bold">⚔️ A DANÇA DOS DRAGÕES COMEÇA ⚔️</text>` },
 
 { ep:"Temporada 2 · Vingança nota zero", title:"Sangue e Queijo",
-  text:"Daemon manda matar um filho do Aegon. Os capangas erram o alvo e decapitam o priminho bebê Jaehaerys na frente da mãe. Resultado: todo o reino passa a odiar os Pretos. Plano impecável (não).",
+  text:"Daemon manda matar um filho do Aegon. Os capangas erram o alvo e decapitam o priminho bebê Jaehaerys na frente da mãe. Resultado: todo o reino passa a odiar os Pretos. Plano impecável #sqn",
   svg:`${bg('#2a1f2e','#181018')}
     ${face(180,210,34,'#f3c89a','angry')}${silverHair(180,210,34)}
     <text x="180" y="285" font-size="13" text-anchor="middle" fill="#e7b8f0" font-weight="bold">Daemon: «olho por olho»</text>
@@ -338,7 +345,7 @@ const scenes = [
     <text x="400" y="405" font-size="15" text-anchor="middle" fill="#e7b8f0" font-weight="bold">«peraí, qual é qual?!» 🤯</text>` },
 
 { ep:"Temporada 2 · Infiltração", title:"Rhaenyra entra disfarçada em Porto Real",
-  text:"Rhaenyra se disfarça de plebeia e arrisca a própria vida entrando na capital inimiga pra encontrar Alicent escondida dentro do Grande Septo. Implora pela paz; Alicent, ainda presa ao mal-entendido das últimas palavras do rei, recusa. Diplomacia: 0.",
+  text:"Rhaenyra se disfarça de plebeia e arrisca a própria vida entrando na capital inimiga pra encontrar Alicent escondida dentro do Grande Septo. Implora pela paz; Alicent, ainda presa ao mal-entendido das últimas palavras do rei, recusa. Diplomacia, nota: zero.",
   svg:`${bg('#2c2740','#171327')}
     <rect x="120" y="252" width="8" height="42" fill="#caa15a"/><text x="124" y="246" font-size="20" text-anchor="middle">🔥</text>
     <rect x="672" y="252" width="8" height="42" fill="#caa15a"/><text x="676" y="246" font-size="20" text-anchor="middle">🔥</text>
@@ -384,8 +391,7 @@ const scenes = [
 { ep:"Temporada 2 · Regência", title:"Aemond demite o próprio avô",
   text:"Com Aegon em coma, Aemond assume como regente e logo manda embora o avô Otto Hightower — justo a única pessoa com bom senso no conselho. Novo lema do governo: na dúvida, toca fogo em alguém. O que poderia dar errado?",
   svg:`${bg('#3a2a2a','#1e1414')}
-    <rect x="340" y="120" width="130" height="220" fill="#6b6b75" stroke="#1c1714" stroke-width="3"/>
-    <path d="M340 120 l-16 -26 M380 112 l8 -30 M430 112 l-6 -32 M470 120 l18 -28" stroke="#9a9aa5" stroke-width="6" stroke-linecap="round"/>
+    ${throne(405,205)}
     ${face(405,165,32,'#f3c89a','smug')}${silverHair(405,165,32)}${crown(405,133,42)}
     <circle cx="392" cy="152" r="9" fill="#1c1714"/>
     <path d="M374 143 q 30 -7 40 6" stroke="#1c1714" stroke-width="3" fill="none"/>
@@ -421,8 +427,8 @@ const scenes = [
     <text x="400" y="207" font-size="13" text-anchor="middle" fill="#1c1714">«e se a gente parasse?»</text>
     <text x="400" y="420" font-size="14" text-anchor="middle" fill="#aee0f2">paz a um passo... 🕊️</text>` },
 
-{ ep:"Temporada 2 · Fim · cliffhanger", title:"Todo mundo marcha (e nada explode... ainda)",
-  text:"Daemon dobra o joelho, Aegon foge com o Larys, Aemond segura Vhagar, e exércitos + dragões marcham pra Batalha do Gullet. A pancadaria de verdade fica pra Temporada 3. Cliffhanger descarado!",
+{ ep:"Temporada 2 · Fim · pra próxima", title:"Todo mundo marcha (e nada explode... ainda)",
+  text:"Daemon dobra o joelho, Aegon foge com o Larys, Aemond segura Vhagar, e exércitos + dragões marcham pra Batalha do Gullet. A pancadaria de verdade fica pra Temporada 3 — cortaram bem no melhor, que sacanagem!",
   svg:`${bg('#2a3a2a','#16201a')}
     ${face(150,210,28,'#f3c89a','angry')}${silverHair(150,210,28)}
     <path d="M150 250 L 150 290" stroke="#1c1714" stroke-width="4"/>
