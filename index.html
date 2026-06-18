@@ -65,6 +65,14 @@
   .topbar .ib:active{transform:translateY(1px);}
   .topbar .vlabel{font-size:11px; letter-spacing:2px; color:#c9b48b; font-weight:bold;}
   .topbar input[type=range]{flex:1; max-width:220px; accent-color:var(--gold); cursor:pointer;}
+  .intro{position:absolute; inset:0; z-index:20; background:radial-gradient(circle at 50% 34%,#1d150d,#070402 75%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:18px;}
+  .intro.hide{display:none;}
+  .introArt{width:210px; max-width:52%; line-height:0;}
+  .introTitle{font-size:30px; color:var(--gold); letter-spacing:2px; text-shadow:0 2px 0 #000; margin:4px 0 0;}
+  .introSub{font-size:12px; color:#c9b48b; letter-spacing:4px; text-transform:uppercase; margin:4px 0 0;}
+  .introMsg{font-size:16px; color:#ecdfc4; max-width:460px; margin:16px 0 0; line-height:1.5;}
+  .bigplay{margin-top:18px; font-size:18px; padding:13px 32px;}
+  .introDisc{font-size:10.5px; color:#6f5f44; margin-top:18px; max-width:430px; line-height:1.4;}
 </style>
 </head>
 <body>
@@ -75,6 +83,14 @@
   </header>
 
   <div class="tv">
+    <div class="intro" id="intro">
+      <div class="introArt" id="introArt"></div>
+      <h2 class="introTitle">House of the Dragon</h2>
+      <p class="introSub">O Resumo · Temporadas 1 &amp; 2</p>
+      <p class="introMsg">E aí, vamos recapitular o que rolou até agora em House of the Dragon?</p>
+      <button class="bigplay" id="startBtn">▶ Começar</button>
+      <p class="introDisc">Resumo cartunesco e não-oficial, feito por fã · sem vínculo com a HBO</p>
+    </div>
     <div class="topbar">
       <button class="ib" id="muteBtn" aria-label="Ligar/desligar som">🔊</button>
       <span class="vlabel">VOLUME</span>
@@ -540,13 +556,18 @@ volSlider.oninput=()=>{
   applyVol(); refreshIcon();
 };
 
-// AUTOPLAY: tenta tocar já; se o navegador bloquear, começa no 1º clique/toque/tecla
-beginAudio();
-['pointerdown','keydown','touchstart','click'].forEach(ev=>
-  document.addEventListener(ev,function onceGo(){ beginAudio(); document.removeEventListener(ev,onceGo); },{once:true}));
+// a música começa quando a pessoa clica em "Começar" (gesto exigido pelo navegador)
+
+const intro=document.getElementById('intro');
+document.getElementById('introArt').innerHTML=`<svg viewBox="0 0 420 240" xmlns="${NS}" role="img" aria-label="Dragão">${defs}<g transform="translate(30,20) scale(0.85)">${dragon(190,130,1,'#e0a92a',1,true)}</g></svg>`;
+function startShow(){
+  intro.classList.add('hide');
+  cur=0; render(); play();
+  musicOn=true; started=false; beginAudio();
+}
+document.getElementById('startBtn').onclick=startShow;
 
 render();
-play();
 </script>
 </body>
 </html>
