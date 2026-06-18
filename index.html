@@ -447,7 +447,7 @@ scenes.forEach((sc,i)=>{
 });
 
 let cur=0, playing=true, t0=null, raf=null;
-const DUR=15000;
+const DUR=20000;
 const epEl=document.getElementById('ep'), titleEl=document.getElementById('title'),
   textEl=document.getElementById('text'), counter=document.getElementById('counter'),
   prog=document.getElementById('prog'), playBtn=document.getElementById('play');
@@ -466,7 +466,10 @@ function tick(ts){
   if(t0===null) t0=ts;
   const e=ts-t0;
   prog.style.width=Math.min(100,(e/DUR)*100)+'%';
-  if(e>=DUR){ go(cur+1); }
+  if(e>=DUR){
+    if(cur < scenes.length-1){ go(cur+1); }
+    else { prog.style.width='100%'; pause(); return; }
+  }
   raf=requestAnimationFrame(tick);
 }
 function play(){ playing=true; playBtn.textContent='⏸ Pausar'; t0=null; cancelAnimationFrame(raf); raf=requestAnimationFrame(tick); resumeMusic(); }
