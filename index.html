@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>House of the Dragon — Resumo Cartunesco (T1 & T2)</title>
+<title>House of the Dragon — Resumo (T1 & T2)</title>
 <style>
   :root{
     --ink:#1c1714; --paper:#f4e9d2; --gold:#e0a92a; --fire:#f0641e;
@@ -141,7 +141,7 @@
     </div>
     <div class="dots" id="dots"></div>
 
-    <p class="hint">clique nas bolinhas pra pular · cada cena ~15s</p>
+    <p class="hint">clique nas bolinhas pra pular · cada cena ~30s</p>
     <footer>2026 — feito com ❤️ por <b>Tchu</b></footer>
   </div>
 </div>
@@ -355,11 +355,11 @@ const scenes = [
 { ep:"Temporada 2 · Castelo amaldiçoado", title:"Daemon surta em Harrenhal",
   text:"Daemon toma o castelo gigante de Harrenhal sozinho — e ganha de brinde pesadelos em alta definição, fantasmas do passado e a feiticeira misteriosa Alys Rivers mexendo com a cabeça dele. O Airbnb pior avaliado de Westeros: assombrado, com crise existencial inclusa.",
   svg:`${bg('#22332a','#0f1a13')}
-    <rect x="694" y="358" width="14" height="54" rx="3" fill="#2f7a4d" stroke="#1c1714" stroke-width="2.5"/>
-    <circle cx="681" cy="356" r="17" fill="#5b3a22" stroke="#1c1714" stroke-width="2.5"/>
-    <circle cx="722" cy="356" r="17" fill="#5b3a22" stroke="#1c1714" stroke-width="2.5"/>
-    <circle cx="701" cy="344" r="26" fill="#5b3a22" stroke="#1c1714" stroke-width="2.5"/>
-    <circle cx="690" cy="340" r="7" fill="#97c459" stroke="#1c1714" stroke-width="2"/>
+    <rect x="678" y="338" width="24" height="80" rx="4" fill="#2f7a4d" stroke="#1c1714" stroke-width="3"/>
+    <circle cx="655" cy="330" r="27" fill="#5b3a22" stroke="#1c1714" stroke-width="3"/>
+    <circle cx="725" cy="330" r="27" fill="#5b3a22" stroke="#1c1714" stroke-width="3"/>
+    <circle cx="690" cy="312" r="40" fill="#5b3a22" stroke="#1c1714" stroke-width="3"/>
+    <circle cx="667" cy="316" r="11" fill="#97c459" stroke="#1c1714" stroke-width="2.5"/>
     ${face(300,245,34,'#f3c89a','shock')}${silverHair(300,245,34)}
     <text x="300" y="328" font-size="13" text-anchor="middle" fill="#bfe0c8" font-weight="bold">Daemon (perdendo a linha)</text>
     <text x="170" y="150" font-size="34">👻</text>
@@ -452,7 +452,7 @@ scenes.forEach((sc,i)=>{
 });
 
 let cur=0, playing=true, t0=null, raf=null;
-const DUR=20000;
+const DUR=30000;
 const epEl=document.getElementById('ep'), titleEl=document.getElementById('title'),
   textEl=document.getElementById('text'), counter=document.getElementById('counter'),
   prog=document.getElementById('prog'), playBtn=document.getElementById('play');
