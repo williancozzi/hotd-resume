@@ -68,7 +68,7 @@
   .topbar input[type=range]{flex:1; max-width:220px; accent-color:var(--gold); cursor:pointer;}
   .intro{position:absolute; inset:0; z-index:20; background:radial-gradient(circle at 50% 34%,#1d150d,#070402 75%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:18px;}
   .intro.hide{display:none;}
-  .introArt{width:325px; max-width:72%; line-height:0;}
+  .introArt{width:390px; max-width:78%; line-height:0; margin-bottom:16px; transform:translateY(-8px);}
   .introTitle{font-size:30px; color:var(--gold); letter-spacing:2px; text-shadow:0 2px 0 #000; margin:4px 0 0;}
   .introSub{font-size:12px; color:#c9b48b; letter-spacing:4px; text-transform:uppercase; margin:4px 0 0;}
   .introMsg{font-size:16px; color:#ecdfc4; max-width:460px; margin:16px 0 0; line-height:1.5;}
@@ -89,7 +89,7 @@
     button{padding:8px 12px; font-size:13px;}
     .counter{font-size:12px;}
     .intro{overflow:auto; padding:14px;}
-    .introArt{width:150px; max-width:44%;}
+    .introArt{width:220px; max-width:62%; margin-bottom:12px; transform:translateY(-4px);}
     .introTitle{font-size:23px; letter-spacing:1px;}
     .introSub{font-size:11px; letter-spacing:2px;}
     .introMsg{font-size:14px; margin-top:12px;}
@@ -201,9 +201,10 @@ function dragon(x,y,s,color,dir,fire){
       <path d="M${f*8*s} ${3*s} L ${f*52*s} ${-4*s} L ${f*30*s} ${6*s} L ${f*54*s} ${14*s} L ${f*10*s} ${11*s} Z" fill="#ffd24a"/>
     </g>`:'';
   return `<g transform="translate(${x},${y}) scale(${f*s},${s})">
-    <path d="M-10 30 Q -120 10 -150 60 Q -110 50 -70 50 Q -110 70 -120 110 Q -80 70 -30 55 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
+    <path d="M22 16 Q -8 -62 -50 -80 Q -38 -56 -42 -40 Q -60 -56 -78 -48 Q -56 -38 -52 -22 Q -70 -28 -84 -14 Q -50 -8 -20 2 Q 0 8 24 18 Z" fill="${color}" stroke="#1c1714" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M18 12 Q -12 -34 -50 -78 M12 10 Q -38 -22 -78 -48 M6 10 Q -40 -8 -84 -14" stroke="#1c1714" stroke-width="2" fill="none" opacity="0.4"/>
+    <path d="M-28 52 C -82 56 -122 58 -146 49 Q -162 42 -157 30 Q -151 41 -139 47 C -116 58 -82 66 -28 64 Z" fill="${color}" stroke="#1c1714" stroke-width="3" stroke-linejoin="round"/>
     <ellipse cx="20" cy="40" rx="70" ry="42" fill="${color}" stroke="#1c1714" stroke-width="3"/>
-    <path d="M30 10 Q 60 -60 110 -40 Q 80 -10 70 20 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
     <path d="M70 30 Q 120 0 150 30 Q 120 25 100 45 Q 130 55 120 80 Q 100 55 75 55 Z" fill="${color}" stroke="#1c1714" stroke-width="3"/>
     <circle cx="105" cy="20" r="6" fill="#fff" stroke="#1c1714" stroke-width="2"/>
     <circle cx="106" cy="22" r="3" fill="#1c1714"/>
