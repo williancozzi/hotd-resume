@@ -13,20 +13,21 @@
   body{
     font-family:'Trebuchet MS','Segoe UI',sans-serif;
     background:radial-gradient(circle at 50% -10%,#2a2018,#120d09 70%);
-    color:#f4e9d2; min-height:100vh;
+    color:#f4e9d2; height:100vh; height:100dvh; overflow:hidden;
     display:flex; align-items:center; justify-content:center;
-    padding:18px;
+    padding:12px 16px;
   }
-  .wrap{width:100%; max-width:860px;}
-  header{text-align:center; margin-bottom:12px;}
+  .wrap{width:100%; max-width:860px; height:100%; display:flex; flex-direction:column;}
+  header{text-align:center; margin-bottom:10px; flex:none;}
   header h1{font-size:26px; letter-spacing:.5px; color:var(--gold); text-shadow:0 2px 0 #000;}
   header p{font-size:13px; color:#c9b48b; margin-top:2px;}
   .tv{
     background:#0c0906; border:6px solid #2a2018; border-radius:18px;
     box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 0 0 2px #3a2c1d;
     overflow:hidden; position:relative;
+    display:flex; flex-direction:column; flex:1 1 auto; min-height:0;
   }
-  .stage{position:relative; width:100%; aspect-ratio:800/460; background:#000;}
+  .stage{position:relative; width:100%; flex:1 1 auto; min-height:0; background:#000;}
   .scene{
     position:absolute; inset:0; opacity:0; transform:scale(1.04);
     transition:opacity .5s ease, transform .5s ease;
@@ -36,7 +37,7 @@
   .scene svg{width:100%; height:100%; display:block;}
   .cap{
     background:linear-gradient(180deg,#1a130c,#0c0906);
-    border-top:3px solid var(--gold); padding:14px 20px 16px; height:150px; overflow-y:auto;
+    border-top:3px solid var(--gold); padding:14px 20px 16px; height:140px; overflow-y:auto; flex:none;
   }
   .cap .ep{font-size:11px; letter-spacing:2px; color:var(--fire); text-transform:uppercase; font-weight:bold;}
   .cap h2{font-size:19px; color:var(--gold); margin:2px 0 6px;}
@@ -66,7 +67,7 @@
   .topbar .ib:active{transform:translateY(1px);}
   .topbar .vlabel{font-size:11px; letter-spacing:2px; color:#c9b48b; font-weight:bold;}
   .topbar input[type=range]{flex:1; max-width:220px; accent-color:var(--gold); cursor:pointer;}
-  .intro{position:absolute; inset:0; z-index:20; background:radial-gradient(circle at 50% 34%,#1d150d,#070402 75%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:18px;}
+  .intro{position:absolute; inset:0; z-index:20; background:radial-gradient(circle at 50% 34%,#1d150d,#070402 75%); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:18px; overflow:auto;}
   .intro.hide{display:none;}
   .introArt{width:390px; max-width:78%; line-height:0; margin-bottom:16px; transform:translateY(-8px);}
   .introTitle{font-size:30px; color:var(--gold); letter-spacing:2px; text-shadow:0 2px 0 #000; margin:4px 0 0;}
@@ -81,11 +82,11 @@
     .tv{border-width:4px; border-radius:12px;}
     .topbar{padding:6px 10px; gap:8px;}
     .topbar input[type=range]{max-width:none;}
-    .cap{padding:13px 16px 15px; height:205px; overflow-y:auto;}
+    .cap{padding:12px 14px 12px; height:160px; overflow-y:auto;}
     .cap .ep{font-size:11px; letter-spacing:1.5px;}
     .cap h2{font-size:18px;}
     .cap p{font-size:15.5px; line-height:1.55;}
-    .controls{gap:8px; margin-top:20px;}
+    .controls{gap:8px; margin-top:14px;}
     button{padding:11px 17px; font-size:15px;}
     .counter{font-size:13px;}
     .dots{gap:8px; margin-top:16px;}
