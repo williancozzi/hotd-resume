@@ -17,17 +17,16 @@
     display:flex; align-items:center; justify-content:center;
     padding:12px 16px;
   }
-  .wrap{width:100%; max-width:860px; height:100%; display:flex; flex-direction:column;}
+  .wrap{width:100%; max-width:clamp(300px, calc((100dvh - 460px) * 1.74), 860px); height:100vh; height:100dvh; margin:0 auto; display:flex; flex-direction:column; justify-content:center;}
   header{text-align:center; margin-bottom:10px; flex:none;}
   header h1{font-size:26px; letter-spacing:.5px; color:var(--gold); text-shadow:0 2px 0 #000;}
   header p{font-size:13px; color:#c9b48b; margin-top:2px;}
   .tv{
     background:#0c0906; border:6px solid #2a2018; border-radius:18px;
     box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 0 0 2px #3a2c1d;
-    overflow:hidden; position:relative;
-    display:flex; flex-direction:column; flex:1 1 auto; min-height:0;
+    overflow:hidden; position:relative; flex:none;
   }
-  .stage{position:relative; width:100%; flex:1 1 auto; min-height:0; background:#000;}
+  .stage{position:relative; width:100%; aspect-ratio:800/460; background:#000;}
   .scene{
     position:absolute; inset:0; opacity:0; transform:scale(1.04);
     transition:opacity .5s ease, transform .5s ease;
@@ -82,7 +81,7 @@
     .tv{border-width:4px; border-radius:12px;}
     .topbar{padding:6px 10px; gap:8px;}
     .topbar input[type=range]{max-width:none;}
-    .cap{padding:12px 14px 12px; height:160px; overflow-y:auto;}
+    .cap{padding:12px 14px 12px; height:150px; overflow-y:auto;}
     .cap .ep{font-size:11px; letter-spacing:1.5px;}
     .cap h2{font-size:18px;}
     .cap p{font-size:15.5px; line-height:1.55;}
