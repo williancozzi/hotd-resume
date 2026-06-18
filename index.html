@@ -197,7 +197,7 @@ function crown(cx,cy,w){
 // dragão cartoon (dir = 1 olha p/ direita)
 function dragon(x,y,s,color,dir,fire){
   const f = dir||1;
-  const fireSvg = fire? `<g transform="translate(${x+f*135*s},${y-10*s})">
+  const fireSvg = fire? `<g transform="translate(${x+f*s*140},${y+s*30})">
       <path d="M0 0 L ${f*70*s} ${-14*s} L ${f*40*s} 0 L ${f*78*s} ${10*s} L ${f*42*s} ${10*s} L ${f*70*s} ${24*s} L 0 ${14*s} Z" fill="#f0641e" stroke="#9e2b25" stroke-width="2"/>
       <path d="M${f*8*s} ${3*s} L ${f*52*s} ${-4*s} L ${f*30*s} ${6*s} L ${f*54*s} ${14*s} L ${f*10*s} ${11*s} Z" fill="#ffd24a"/>
     </g>`:'';
