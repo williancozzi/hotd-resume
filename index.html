@@ -75,19 +75,22 @@
   .bigplay{margin-top:18px; font-size:18px; padding:13px 32px;}
   .introDisc{font-size:10.5px; color:#6f5f44; margin-top:18px; max-width:430px; line-height:1.4;}
   @media (max-width:600px){
-    body{align-items:flex-start; padding:10px;}
-    header h1{font-size:19px;}
+    body{align-items:center; padding:12px 10px;}
+    header h1{font-size:21px;}
     header p{font-size:12px;}
     .tv{border-width:4px; border-radius:12px;}
     .topbar{padding:6px 10px; gap:8px;}
     .topbar input[type=range]{max-width:none;}
-    .cap{padding:10px 14px 12px; height:165px; overflow-y:auto;}
-    .cap .ep{font-size:10px; letter-spacing:1.5px;}
-    .cap h2{font-size:16px;}
-    .cap p{font-size:13.5px; line-height:1.45;}
-    .controls{gap:7px;}
-    button{padding:8px 12px; font-size:13px;}
-    .counter{font-size:12px;}
+    .cap{padding:13px 16px 15px; height:205px; overflow-y:auto;}
+    .cap .ep{font-size:11px; letter-spacing:1.5px;}
+    .cap h2{font-size:18px;}
+    .cap p{font-size:15.5px; line-height:1.55;}
+    .controls{gap:8px; margin-top:20px;}
+    button{padding:11px 17px; font-size:15px;}
+    .counter{font-size:13px;}
+    .dots{gap:8px; margin-top:16px;}
+    .dot{width:14px; height:14px;}
+    .hint{font-size:12.5px; margin-top:12px;}
     .intro{overflow:auto; padding:14px;}
     .introArt{width:220px; max-width:62%; margin-bottom:12px; transform:translateY(-4px);}
     .introTitle{font-size:23px; letter-spacing:1px;}
@@ -439,6 +442,15 @@ const scenes = [
     <text x="630" y="300" font-size="12" text-anchor="middle" fill="#ffd24a" font-weight="bold">Aemond + Vhagar</text>
     <text x="400" y="370" font-size="15" text-anchor="middle" fill="#f0641e" font-weight="bold">➡️ rumo à BATALHA DO GULLET</text>
     <text x="400" y="420" font-size="20" text-anchor="middle" fill="#e0a92a" font-weight="bold">CONTINUA NA TEMPORADA 3… 🐉</text>` },
+
+{ ep:"Fim", title:"É isso por enquanto!",
+  text:"Você está oficialmente em dia com a Dança dos Dragões. E a melhor parte: a Temporada 3 chegou — então a guerra (e as fofocas da corte) continuam. Bora maratonar! 🍿",
+  svg:`${bg('#1b1226','#0a0610')}
+    ${dragon(630,120,0.8,'#b83a2e',-1,true)}
+    <text x="400" y="262" font-size="86" text-anchor="middle" fill="#e0a92a" font-weight="bold">FIM</text>
+    <text x="400" y="312" font-size="22" text-anchor="middle" fill="#ecdfc4" font-weight="bold">A Temporada 3 chegou! 🔥</text>
+    <text x="400" y="346" font-size="16" text-anchor="middle" fill="#aeb8c8">A Dança dos Dragões continua…</text>
+    <text x="400" y="418" font-size="14" text-anchor="middle" fill="#9d8a66">obrigado por assistir ao resumo 🐉</text>` },
 ];
 
 /* ---------- montagem + player ---------- */
