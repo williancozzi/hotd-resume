@@ -602,7 +602,13 @@ volSlider.oninput=()=>{
 // a música começa quando a pessoa clica em "Começar" (gesto exigido pelo navegador)
 
 const intro=document.getElementById('intro');
-document.getElementById('introArt').innerHTML=`<svg viewBox="0 0 420 240" xmlns="${NS}" role="img" aria-label="Dragão">${defs}<g transform="translate(30,20) scale(0.85)">${dragon(190,130,1,'#e0a92a',1,true)}</g></svg>`;
+const introArt=document.getElementById('introArt');
+const introDragonSvg=`<svg viewBox="0 0 420 240" xmlns="${NS}" role="img" aria-label="Dragão">${defs}<g transform="translate(30,20) scale(0.85)">${dragon(190,130,1,'#e0a92a',1,true)}</g></svg>`;
+const introImg=document.createElement('img');
+introImg.src='dragao.png'; introImg.alt='Dragão';
+introImg.style.cssText='width:100%;height:auto;image-rendering:pixelated;';
+introImg.onerror=()=>{ introArt.innerHTML=introDragonSvg; };
+introArt.appendChild(introImg);
 function startShow(){
   intro.classList.add('hide');
   document.getElementById('belowControls').style.display='';
